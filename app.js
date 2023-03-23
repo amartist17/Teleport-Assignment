@@ -68,7 +68,7 @@ app.post("/login", async (req, res) => {
     if (!username || !password)
       return res.status(400).json({
         status: "Failure",
-        message: "Provide both email and password",
+        message: "Provide both username and password",
       });
 
     let user = await User.findOne({ username }).select("+password");
@@ -143,7 +143,9 @@ app.get("/blog/:id", async (req, res) => {
 
 app.patch("/update-blog/:id", async (req, res) => {
   try {
-    let updatedBlog = await Blog.findByIdAndUpdate(req.params.id, req.body);
+    let updatedBlog = await Blog.findByIdAndUpdate(req.params.id, req.body, {
+      new: true,
+    });
     res.send(updatedBlog);
   } catch (error) {
     res.json({
